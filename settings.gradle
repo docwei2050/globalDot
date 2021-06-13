@@ -1,0 +1,4 @@
+rootProject.name = "globalDot"
+include ':app'
+
+include ':dobLib'

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.docwei.doblib">
+    <application>
+    <provider
+        android:name="com.docwei.doblib.ZeTaFrontBackgroundContentProvider"
+        android:authorities="${applicationId}.ZeTaFrontBackgroundContentProvider"
+        android:enabled="true"
+        android:exported="false" />
+    </application>
+</manifest>
