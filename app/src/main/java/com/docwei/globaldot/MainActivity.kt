@@ -12,9 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
        val tv=findViewById<TextView>(R.id.tv)
+       Log.e("ZeTaDot","${ tv.isClickable}")
         tv.setOnClickListener {
             val intent= Intent(this@MainActivity,FirstActivity::class.java)
             startActivity(intent)
         }
+        Log.e("ZeTaDot","${ tv.isClickable}")
+
     }
 }
