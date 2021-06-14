@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
        val tv=findViewById<TextView>(R.id.tv)
        Log.e("ZeTaDot","${ tv.isClickable}")
         tv.setOnClickListener {
+            Thread.sleep(4000)
             val intent= Intent(this@MainActivity,FirstActivity::class.java)
             startActivity(intent)
         }
