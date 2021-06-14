@@ -49,6 +49,40 @@ View->ListenerInfo->OnClickListener 递归遍历 通过反射每一个设置了o
  ####方式四：透明层处于页面的最上层，将elevation设置比较大的值
  透明层可以用自定义FrameLayout实现，处理onTouchEvent(MotionEvent ev),在其中获取目的View，如同方式三中的处理。
 ###以上方案都不能处理Dialog的点击事件。
+ ####方式五：AsectJ
+配置会因为gradle插件的一些兼容问题会导致编译存在一定的坑，大家注意下。
+目前使用gradle-6.7.1-bin.zip com.android.tools.build:gradle:4.2.1   classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
+编译会报错：Execution failed for task ':app:dexBuilderDebug'.  > java.util.zip.ZipException: zip file is empty 
+修改编译版本：gradle-5.1-all.zip  classpath "com.android.tools.build:gradle:3.2.0"  classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
+可以打包成功。
+#####aspectJ的一些关键使用：
+1.先定义一个切面类(所谓的切面类就是将类上加上@Aspect注解)
+2.进行方法hook适时处理方法增强。
+  以下写法是一样的：
+      @Pointcut("execution(* android.view.View.OnClickListener.onClick(android.view.View))")
+      fun getTime(){
+      }
+      @Around("getTime()")
+      fun getExecuteTime2(proceeding: ProceedingJoinPoint) {
+          val startTime = System.currentTimeMillis();
+          proceeding.proceed()
+          val diff = System.currentTimeMillis() - startTime
+          Log.e("ZeTaDot", "耗时---》$diff")
+      }
+  pk:
+    @Around("execution(* android.view.View.OnClickListener.onClick(android.view.View))")
+        fun getExecuteTime(proceeding: ProceedingJoinPoint) {
+            val startTime = System.currentTimeMillis();
+            proceeding.proceed()
+            val diff = System.currentTimeMillis() - startTime
+            Log.e("ZeTaDot", "耗时---》$diff")
+     }
+ 两者的效果是一样的，注意Around的注解修饰的方法，参数是ProceedingJoinPoint，可以在方法体执行前后做一些操作。
+ @After @Before @AfterReturning等都可以捕捉到相应位置
+ 3.切点表达式：execution 与call是不一样的，一个是在方法体前后做处理，一个是在方法调用前后做处理。
+              修饰符- 返回值 -方法名 - 参数- 异常模式
+              修饰符可以是注解
+ 这里针对直接代码的setOnClickListener使用aop很简单，如果是xml配置的onClick方法，可以创建一个注解，在onClick方法上添加这个注解，然后在切面类的切点方法的修饰符那里添加上注解@xxx即可。
+ 例如：@Around("execution(@butterknife.onClick * *(..))") 
  
-  
  

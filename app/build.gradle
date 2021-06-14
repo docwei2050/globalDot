@@ -43,5 +43,4 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation project(path: ':dobLib')
 
-    //api 'org.aspectj:aspectjrt:1.9.6'
 }
